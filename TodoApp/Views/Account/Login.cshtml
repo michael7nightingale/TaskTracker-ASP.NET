@@ -1,0 +1,26 @@
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> userManager;
+@inject SignInManager<User> signInManager;
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Login";
+}
+
+<form method="post" action="@Url.Action("Login")">
+    <p>
+    <label>
+        Email:
+        <input type="text" name="Email" class="form-control">
+    </label>
+    <p>    
+    <p>    
+        <label>
+            Password:
+            <input type="password" name="Password" class="form-control">
+        </label>
+    </p>
+
+    <button class="btn btn-outline-primary">Log in</button>
+
+</form>
