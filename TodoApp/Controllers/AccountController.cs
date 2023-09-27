@@ -54,7 +54,6 @@ public class AccountController : Controller
         {
             return RedirectToAction("Register");
         }
-
         var user = new User { Email = userRegisterData.Email, UserName = userRegisterData.Email};
         var result = await _userManager.CreateAsync(user, userRegisterData.Password);
         if (result.Succeeded)
