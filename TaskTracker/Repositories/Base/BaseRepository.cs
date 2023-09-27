@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TodoApp.Models.Base;
 
 namespace TodoApp.Repositories.Base;
@@ -24,12 +25,13 @@ public class BaseRepository<TModel> : IBaseRepository<TModel> where TModel: Base
     {
         return await Entity.ToListAsync();
     }
-
-    public async void Create(TModel modelData)
+    
+    public async Task<EntityEntry<TModel>> Create(TModel modelData)
     {
         modelData.Id = Guid.NewGuid().ToString();
-        await Entity.AddAsync(modelData);
+        var instance = await Entity.AddAsync(modelData);
         SaveChanges();
+        return instance;
     }
     
     public async Task<TModel?> Get(string Id)

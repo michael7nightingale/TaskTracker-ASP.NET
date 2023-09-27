@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>@Model.Title</h1>
+<h1>@Model.Title @Model.Tasks.Count</h1>
 
 <div>
     <hr />
@@ -23,8 +23,10 @@
         <div class="row">
             @foreach (var task in Model.Tasks)
             {
-                <div class="col task-container">
-                    <h5>@task.Title</h5>
+                <div class="col">
+                    <div class="task-container">
+                       <h5>@task.Title</h5> 
+                    </div>
                 </div>
             }
         </div>   

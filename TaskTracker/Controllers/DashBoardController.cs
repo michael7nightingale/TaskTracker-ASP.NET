@@ -49,6 +49,7 @@ public class DashBoardController : Controller
             return NotFound();
         }
 
+        model.Tasks = await _taskRepository.GetTasksByDashBoard(id);
         return View(model);
     }
 
@@ -88,7 +89,7 @@ public class DashBoardController : Controller
         DashBoard? dashBoard = await _dashBoardRepository.Get(id);
         if (dashBoard is null) return NotFound();
         
-        _taskRepository.Create(new Task
+        var instance = await _taskRepository.Create(new Task
         {
             Title = model.Title,
             ToUsers = model.ToUsers,

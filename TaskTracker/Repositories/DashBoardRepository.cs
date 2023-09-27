@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TodoApp.Models;
 using TodoApp.Repositories.Base;
+using Task = System.Threading.Tasks.Task;
 
 namespace TodoApp.Repositories;
 
@@ -15,10 +17,10 @@ public class DashBoardRepository: BaseRepository<DashBoard>
         return _db.DashBoards.Where(d => d.Users.Contains(user)).ToList();
     }
 
-    public async void Create(DashBoard model)
+    public async Task<EntityEntry<DashBoard>> Create(DashBoard model)
     {
         model.Users.Add(model.Creator);
-        base.Create(model);
+        return await base.Create(model);
     }
     
 
