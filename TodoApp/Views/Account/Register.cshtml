@@ -1,33 +1,34 @@
 @using Microsoft.AspNetCore.Identity
-@inject UserManager<User> userManager;
-@inject SignInManager<User> signInManager;
 
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Register";
 }
 
-<form method="post" action="@Url.Action("Register")">
-    <p>
-    <label>
-        Email:
-        <input type="text" name="Email" class="form-control">
-    </label>
-    <p>    
-    <p>    
-        <label>
-            Password:
-            <input type="password" name="Password" class="form-control">
-        </label>
-    </p>
-    
-    <p>    
-         <label>
-             Confirm password:
-             <input type="password" name="ConfirmPassword" class="form-control">
-         </label>
-     </p>
+<div class="form-container">
+    <form method="post" action="@Url.Action("Register")">
+        <div class="form-item">
+              <label>
+                  Email:
+                  <input type="text" name="Email" class="form-control" required>
+              </label>
+        </div>
+       
+        <div class="form-item">
+               <label>
+                   Password:
+                   <input type="password" name="Password" class="form-control" required>
+               </label>
+        </div>
+        
+        <div class="form-item">
+            <label>
+                Confirm password:
+                <input type="password" name="ConfirmPassword" class="form-control" required>
+            </label>
+        </div>
 
-    <button class="btn btn-outline-primary">Log in</button>
+        <button class="btn btn-outline-primary center-button">Register</button>
 
-</form>
+    </form>  
+</div>

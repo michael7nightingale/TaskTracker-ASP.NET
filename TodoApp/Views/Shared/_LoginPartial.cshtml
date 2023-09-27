@@ -6,22 +6,53 @@
 <ul class="navbar-nav">
     @if (signInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-action="Login" asp-controller="Account" title="Manage">Hello @User.Identity?.Name!</a>
-        </li>
-        <li class="nav-item">
-            <form class="form-inline" asp-action="Logout" asp-controller="Account" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-            </form>
-        </li>
+        <div class="dropdown">
+            <button
+                class="btn btn-primary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+            >
+                <a class="nav-link text-dark" asp-action="Index" asp-controller="DashBoard" title="Manage">Account: @User.Identity?.Name</a>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-action="Index" asp-controller="DashBoard">My Dashboards</a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li class="nav-item">
+                    <form class="form-inline" asp-action="Logout" asp-controller="Account" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                    </form>
+                </li>
+                <div class="dropdown-divider"></div>
+            </ul>
+        </div>
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-action="Register" asp-controller="Account">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-action="Login" asp-controller="Account">Login</a>
-        </li>
+        <div class="dropdown">
+            <button
+                class="btn btn-outline-primary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+            >
+                <a class="nav-link text-dark" asp-action="Index" asp-controller="DashBoard" title="Manage">Account</a>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-action="Register" asp-controller="Account">Register</a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-action="Login" asp-controller="Account">Login</a>
+                </li>
+                <div class="dropdown-divider"></div>
+            </ul>
+        </div>
+        
     }
 </ul>
