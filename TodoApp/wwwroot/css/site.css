@@ -16,3 +16,36 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.text-center{
+  text-align: center;
+}
+
+.margin-title-top{
+  margin-top: 20px;
+}
+
+
+.form-container{
+  margin: auto;
+  max-width: 500px;
+  background-color: #bacbe6;
+  border-radius: 19px;
+  padding: 20px;
+  
+}
+
+
+.form-item{
+  margin: auto;
+  border-radius: 3px;
+  width: 90%;
+}
+
+.center-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: block;
+  width: 130px;
+  margin: 10px auto 0px auto;
+}
