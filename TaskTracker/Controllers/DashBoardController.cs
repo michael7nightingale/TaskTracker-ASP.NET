@@ -16,6 +16,7 @@ public class DashBoardController : Controller
     private readonly ApplicationDbContext _context;
     private readonly DashBoardRepository _dashBoardRepository;
     private readonly TaskRepository _taskRepository;
+    private readonly InvitationRepository _invitationRepository;
     private readonly UserManager<User> _userManager;
     
     public DashBoardController(ApplicationDbContext context, UserManager<User> userManager)
@@ -24,6 +25,7 @@ public class DashBoardController : Controller
         _userManager = userManager;
         _dashBoardRepository = new DashBoardRepository(_context);
         _taskRepository = new TaskRepository(_context);
+        _invitationRepository = new InvitationRepository(_context);
     }
 
     [HttpGet]
@@ -36,13 +38,8 @@ public class DashBoardController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Detail(string? id)
+    public async Task<IActionResult> Detail(string id)
     {
-        if (id == null || _context.BaseModel == null)
-        {
-            return NotFound();
-        }
-
         var model = await _dashBoardRepository.Get(id);    
         if (model is null)
         {
@@ -60,16 +57,12 @@ public class DashBoardController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(DashBoardCreateModel model)
     {
-        if (ModelState.IsValid)
+       await _dashBoardRepository.Create(new DashBoard
         {
-            _dashBoardRepository.Create(new DashBoard
-            {
-                Title = model.Title,
-                Creator = await _userManager.GetUserAsync(HttpContext.User)
-            });
-            return RedirectToAction(nameof(Index));
-        }
-        return View(model);
+            Title = model.Title,
+            Creator = await _userManager.GetUserAsync(HttpContext.User) 
+        });
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpGet]
@@ -100,6 +93,36 @@ public class DashBoardController : Controller
         return RedirectToAction(nameof(Detail), "DashBoard", new {id=dashBoard.Id} );
     }
 
+    [HttpPost]
+    public async Task<IActionResult> InviteUser(string id, InviteUserModel model)
+    {
+        DashBoard? dashBoard = await _dashBoardRepository.Get(id);
+        if (dashBoard is null) return NotFound();
+        var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+        var invitedUser = await _context.Users.Where(user => user.Email == model.Email).FirstOrDefaultAsync();
+         if (!dashBoard.Users.Contains(currentUser)) return BadRequest();
+        if (invitedUser is not null)
+        {  try
+                 {
+                     var instance = await _invitationRepository.Create(
+                         new Invitation
+                         {
+                             Invited = invitedUser,
+                             Inviter = currentUser,
+                             ToDashBoard = dashBoard
+                                 
+                         }
+                     );
+                 }
+                 catch 
+                 {
+                     
+                 }
+            
+        }
+        return RedirectToAction("Detail", "DashBoard", new {id = id});
+    }
+    
 
     [HttpGet]
     public async Task<IActionResult> Edit(string? id)
