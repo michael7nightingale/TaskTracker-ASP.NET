@@ -2,13 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using TodoApp.Models;
-using TodoApp.Repositories;
-using TodoApp.ViewModels.DashBoard;
-using Task = TodoApp.Models.Task;
+using TaskTracker.Models;
+using TaskTracker.Repositories;
+using TaskTracker.ViewModels.DashBoard;
+using Task = TaskTracker.Models.Task;
 
 
-namespace TodoApp.Controllers;
+namespace TaskTracker.Controllers;
 
 [Authorize]
 public class DashBoardController : Controller

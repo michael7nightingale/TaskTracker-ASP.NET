@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using TodoApp.Models.Base;
+using TaskTracker.Models.Base;
 
-namespace TodoApp.Repositories.Base;
-
-using Data;
+namespace TaskTracker.Repositories.Base;
 
 
 public class BaseRepository<TModel> : IBaseRepository<TModel> where TModel: BaseModel

@@ -1,6 +1,6 @@
-using TodoApp.Models;
+using TaskTracker.Models;
 
-namespace TodoApp.ViewModels.DashBoard;
+namespace TaskTracker.ViewModels.DashBoard;
 
 public class TaskCreateInfoModel
 {

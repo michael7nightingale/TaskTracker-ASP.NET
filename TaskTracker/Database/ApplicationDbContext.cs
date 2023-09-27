@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-using TodoApp.Models;
-using Task = TodoApp.Models.Task;
+using TaskTracker.Models;
+using Task = TaskTracker.Models.Task;
 
 
 public class ApplicationDbContext : IdentityDbContext<User>
@@ -18,5 +18,5 @@ public class ApplicationDbContext : IdentityDbContext<User>
         Database.EnsureCreated();
     }
     
-    public DbSet<TodoApp.Models.Base.BaseModel>? BaseModel { get; set; }
+    public DbSet<TaskTracker.Models.Base.BaseModel>? BaseModel { get; set; }
 }

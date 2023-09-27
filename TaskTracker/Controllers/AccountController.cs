@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using TodoApp.Models;
+using TaskTracker.Models;
 
 using Microsoft.AspNetCore.Mvc;
-using TodoApp.Data;
-using TodoApp.ViewModels;
+using TaskTracker.ViewModels.DashBoard;
+using TaskTracker.ViewModels;
 
-namespace TodoApp.Controllers;
+namespace TaskTracker.Controllers;
 
 public class AccountController : Controller
 {

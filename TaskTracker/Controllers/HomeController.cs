@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TodoApp.Models;
+using TaskTracker.Models;
 
-namespace TodoApp.Controllers;
+namespace TaskTracker.Controllers;
 
 public class HomeController : Controller
 {

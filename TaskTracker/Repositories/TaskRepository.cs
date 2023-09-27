@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using TodoApp.Repositories.Base;
-using Task = TodoApp.Models;
+using TaskTracker.Repositories.Base;
+using Task = TaskTracker.Models;
 
 
-namespace TodoApp.Repositories;
+namespace TaskTracker.Repositories;
 
 public class TaskRepository : BaseRepository<Task.Task>
 {

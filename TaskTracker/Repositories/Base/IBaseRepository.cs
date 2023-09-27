@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using TodoApp.Models.Base;
+using TaskTracker.Models.Base;
 
-namespace TodoApp.Repositories.Base;
+namespace TaskTracker.Repositories.Base;
 
 public interface IBaseRepository<TModel> where TModel : BaseModel
 {

@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using TodoApp.Models;
-using TodoApp.Repositories.Base;
-using Task = System.Threading.Tasks.Task;
+using TaskTracker.Models;
+using TaskTracker.Repositories.Base;
 
-namespace TodoApp.Repositories;
+namespace TaskTracker.Repositories;
 
 public class DashBoardRepository: BaseRepository<DashBoard>
 {

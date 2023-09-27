@@ -1,7 +1,6 @@
-using NuGet.Frameworks;
-using TodoApp.Models.Base;
+using TaskTracker.Models.Base;
 
-namespace TodoApp.Models;
+namespace TaskTracker.Models;
 
 
 public class DashBoard : BaseModel

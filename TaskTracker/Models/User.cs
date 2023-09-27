@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace TodoApp.Models;
+namespace TaskTracker.Models;
 
 public class User : IdentityUser
 {

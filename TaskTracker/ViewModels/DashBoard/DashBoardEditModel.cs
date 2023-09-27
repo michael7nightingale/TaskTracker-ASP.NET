@@ -1,4 +1,4 @@
-namespace TodoApp.ViewModels.DashBoard;
+namespace TaskTracker.ViewModels.DashBoard;
 
 public class DashBoardEditModel
 {

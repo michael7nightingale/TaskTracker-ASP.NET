@@ -1,4 +1,4 @@
-namespace TodoApp.Models.Base;
+namespace TaskTracker.Models.Base;
 
 public class BaseModel
 {

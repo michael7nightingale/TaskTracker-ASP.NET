@@ -1,4 +1,4 @@
-namespace TodoApp.ViewModels;
+namespace TaskTracker.ViewModels;
 
 public class UserRegisterModel
 {
