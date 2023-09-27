@@ -1,5 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using TodoApp.Data;
 using TodoApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+
+builder.Services.AddTransient<UserManager<User>>();
+builder.Services.AddTransient<SignInManager<User>>();
 
 builder.Services.AddDefaultIdentity<User>(options =>
     {
