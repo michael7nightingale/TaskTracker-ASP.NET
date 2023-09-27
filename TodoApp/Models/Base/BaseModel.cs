@@ -1,6 +1,6 @@
 namespace TodoApp.Models.Base;
 
-public record BaseModel
+public class BaseModel
 {
     public string Id { get; set; }
     

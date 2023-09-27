@@ -4,5 +4,5 @@ namespace TodoApp.Models;
 
 public class User : IdentityUser
 {
-    
+
 }
