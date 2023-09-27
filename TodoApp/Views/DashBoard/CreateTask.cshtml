@@ -1,0 +1,20 @@
+@{
+    ViewBag.Title = "Create Task";
+}
+
+
+<h2>Task creation</h2>
+
+<div>
+    <form asp-action="CreateTask" method="post">
+        <p>
+            <label>
+                <input type="text" name="Title"/>
+            </label>
+        </p>
+        <p>
+          <button class="btn btn-outline-primary">Create task</button>  
+        </p>
+    </form>
+    
+</div>

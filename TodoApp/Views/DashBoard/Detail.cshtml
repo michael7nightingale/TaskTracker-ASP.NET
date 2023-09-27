@@ -1,0 +1,36 @@
+@using Task = System.Threading.Tasks.Task
+@model TodoApp.Models.DashBoard
+
+@{
+    ViewData["Title"] = "DashBoard Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@Model.Title</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+    <h3 class="text-center margin-title-top">Tasks</h3>
+    <a asp-action="CreateTask" asp-route-id="@Model.Id"><span>+ create</span></a>
+    @if (Model.Tasks.Count > 0)
+    {
+        <div class="row">
+            @foreach (var task in Model.Tasks)
+            {
+                <div class="col task-container">
+                    <h5>@task.Title</h5>
+                </div>
+            }
+        </div>   
+    }
+    else {
+    <h4 class="text-center margin-title-top">There is no tasks</h4>
+    
+    }
+</div>
