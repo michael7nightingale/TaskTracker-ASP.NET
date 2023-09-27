@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>aspnet-TodoApp-94A83B33-6CD1-4321-B6AE-F043E84F37B4</UserSecretsId>
+        <UserSecretsId>aspnet-TaskTracker-94A83B33-6CD1-4321-B6AE-F043E84F37B4</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
@@ -24,8 +24,5 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.21"/>
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     </ItemGroup>
-
-
-
 
 </Project>
