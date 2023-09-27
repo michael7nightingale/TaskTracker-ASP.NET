@@ -15,6 +15,37 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
+    
+    <h3 class="text-center margin-title-top">Users</h3>
+    <div class="row">
+        <div class="col">
+             <div class="form-container">
+                  <form action="@Url.Action("InviteUser", "DashBoard", new { id = Model.Id })" method="post">
+                      <div class="form-item">
+                          <label>
+                              User`s Email
+                              <input type="email" required placeholder="Email">
+                          </label>
+                      </div>
+                      <button class="btn btn-outline-primary center-button">Invite</button>
+                  </form>
+              </div>
+        </div>
+       
+        <div class="col">
+              <ul>
+                  @* <li><h4>@Model.Creator.Email (Creator)</h4></li> *@
+                  @foreach (var user in Model.Users)
+                  {
+                      @if (user.Email != Model.Creator.Email)
+                      {
+                          <li>@user.Email</li>
+                      }
+                  }
+              </ul>
+        </div>
+    </div>
+  
     <h3 class="text-center margin-title-top">Tasks</h3>
     <a asp-action="CreateTask" asp-route-id="@Model.Id"><span>+ create</span></a>
     @if (Model.Tasks.Count > 0)
