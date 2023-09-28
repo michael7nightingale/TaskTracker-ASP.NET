@@ -22,6 +22,9 @@ public class DashBoardRepository: BaseRepository<DashBoard>
                     Title = d.Title,
                     Creator = _db.Users.First(u => u.Id == d.CreatorId),
                     CreatorId = d.CreatorId,
+                    Users = d.Users,
+                    Tasks = d.Tasks,
+                    
                 }
             )
             .Where(d => d.Id == id).FirstOrDefaultAsync();
