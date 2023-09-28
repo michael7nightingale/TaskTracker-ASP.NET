@@ -2,7 +2,7 @@ using TaskTracker.Models.Base;
 
 namespace TaskTracker.Models;
 
-public class Invitation : BaseModel
+public record Invitation : BaseModel
 {
     public string InviterId { get; set; }
     public User? Inviter { get; set; } = null;

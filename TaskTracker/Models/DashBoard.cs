@@ -3,7 +3,7 @@ using TaskTracker.Models.Base;
 namespace TaskTracker.Models;
 
 
-public class DashBoard : BaseModel
+public record DashBoard : BaseModel
 {
     public string CreatorId { get; set; }
     public User? Creator { get; set; } = null;

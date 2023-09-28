@@ -2,7 +2,7 @@ using TaskTracker.Models.Base;
 
 namespace TaskTracker.Models;
 
-public class Task : BaseModel
+public record Task : BaseModel
 {
     public string DashBoardId { get; set; }
     public DashBoard? DashBoard { get; set; } = null;

@@ -1,6 +1,6 @@
 namespace TaskTracker.Models.Base;
 
-public class BaseModel
+public record BaseModel
 {
     public string Id { get; set; }
     
