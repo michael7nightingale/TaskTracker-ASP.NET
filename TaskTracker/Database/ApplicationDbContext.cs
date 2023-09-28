@@ -18,5 +18,29 @@ public class ApplicationDbContext : IdentityDbContext<User>
         Database.EnsureCreated();
     }
     
-    public DbSet<TaskTracker.Models.Base.BaseModel>? BaseModel { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<DashBoard>()
+            .HasMany(d => d.Tasks)
+            .WithOne()
+            .HasForeignKey(t => t.DashBoardId)
+            .IsRequired();
+        modelBuilder.Entity<DashBoard>()
+            .HasMany(d => d.Users)
+            .WithMany(u => u.DashBoards);
+        modelBuilder.Entity<DashBoard>()
+            .HasOne(d => d.Creator)
+            .WithMany(u => u.CreatedDashBoards)
+            .HasForeignKey(d => d.CreatorId);
+        modelBuilder.Entity<Invitation>()
+            .HasOne(i => i.Invited)
+            .WithMany(u => u.IncomingInvitations)
+            .HasForeignKey(i => i.InvitedId);
+        modelBuilder.Entity<Invitation>()
+            .HasOne(i => i.Inviter)
+            .WithMany(u => u.OutcomingInvitations)
+            .HasForeignKey(i => i.InviterId);
+        base.OnModelCreating(modelBuilder);
+    }
+    
 }
