@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Scaffolding;
 using TaskTracker.Models;
 using TaskTracker.Repositories;
 using TaskTracker.ViewModels.DashBoard;
+using static TaskTracker.Service.HttpContextUserService;
 using Task = TaskTracker.Models.Task;
 
 
@@ -32,7 +34,7 @@ public class DashBoardController : Controller
     public async Task<IActionResult> Index()
     {
         var dashBoards = _dashBoardRepository.GetUserDashBoards(
-            await _userManager.GetUserAsync(HttpContext.User)
+            await GetHttpContextUser(_userManager, HttpContext)
             );
         return View(dashBoards);
     }
@@ -46,7 +48,7 @@ public class DashBoardController : Controller
             return NotFound();
         }
 
-        model.Tasks = await _taskRepository.GetTasksByDashBoard(id);
+        // model.Tasks = await _taskRepository.GetTasksByDashBoard(id);
         return View(model);
     }
 
@@ -60,7 +62,7 @@ public class DashBoardController : Controller
        await _dashBoardRepository.Create(new DashBoard
         {
             Title = model.Title,
-            Creator = await _userManager.GetUserAsync(HttpContext.User) 
+            Creator = await GetHttpContextUser(_userManager, HttpContext)
         });
         return RedirectToAction(nameof(Index));
     }
@@ -86,7 +88,8 @@ public class DashBoardController : Controller
         {
             Title = model.Title,
             ToUsers = model.ToUsers,
-            Creator = await _userManager.GetUserAsync(HttpContext.User),
+            Creator = await GetHttpContextUser(_userManager, HttpContext),
+            DashBoardId = id,
             DashBoard = await _dashBoardRepository.Get(id)
             
         });
@@ -98,8 +101,8 @@ public class DashBoardController : Controller
     {
         DashBoard? dashBoard = await _dashBoardRepository.Get(id);
         if (dashBoard is null) return NotFound();
-        var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-        var invitedUser = await _context.Users.Where(user => user.Email == model.Email).FirstOrDefaultAsync();
+        var currentUser = await GetHttpContextUser(_userManager, HttpContext);
+        var invitedUser = await _context.Users.Where(u => u.Email == model.Email).FirstOrDefaultAsync();
          if (!dashBoard.Users.Contains(currentUser)) return BadRequest();
         if (invitedUser is not null)
         {  try
@@ -116,7 +119,6 @@ public class DashBoardController : Controller
                  }
                  catch 
                  {
-                     
                  }
             
         }
@@ -124,21 +126,21 @@ public class DashBoardController : Controller
     }
     
 
-    [HttpGet]
-    public async Task<IActionResult> Edit(string? id)
-    {
-        if (id == null || _context.BaseModel == null)
-        {
-            return NotFound();
-        }
-
-        var model = await _dashBoardRepository.Get(id);
-        if (model == null)
-        {
-            return NotFound();
-        }
-        return View(model);
-    }
+    // [HttpGet]
+    // public async Task<IActionResult> Edit(string? id)
+    // {
+    //     if (id == null || _context.BaseModel == null)
+    //     {
+    //         return NotFound();
+    //     }
+    //
+    //     var model = await _dashBoardRepository.Get(id);
+    //     if (model == null)
+    //     {
+    //         return NotFound();
+    //     }
+    //     return View(model);
+    // }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -160,43 +162,43 @@ public class DashBoardController : Controller
         return View(await _dashBoardRepository.Get(id));
     }
 
-    public async Task<IActionResult> Delete(string? id)
-    {
-        if (id is null || _context.BaseModel == null)
-        {
-            return NotFound();
-        }
+    // public async Task<IActionResult> Delete(string? id)
+    // {
+    //     if (id is null || _context.BaseModel == null)
+    //     {
+    //         return NotFound();
+    //     }
+    //
+    //     var baseModel = await _context.BaseModel
+    //         .FirstOrDefaultAsync(m => m.Id == id);
+    //     if (baseModel == null)
+    //     {
+    //         return NotFound();
+    //     }
+    //
+    //     return View(baseModel);
+    // }
 
-        var baseModel = await _context.BaseModel
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (baseModel == null)
-        {
-            return NotFound();
-        }
+    // [HttpPost, ActionName("Delete")]
+    // [ValidateAntiForgeryToken]
+    // public async Task<IActionResult> DeleteConfirmed(string id)
+    // {
+    //     if (_context.BaseModel == null)
+    //     {
+    //         return Problem("Entity set 'ApplicationDbContext.BaseModel'  is null.");
+    //     }
+    //     var baseModel = await _context.BaseModel.FindAsync(id);
+    //     if (baseModel != null)
+    //     {
+    //         _context.BaseModel.Remove(baseModel);
+    //     }
+    //     
+    //     await _context.SaveChangesAsync();
+    //     return RedirectToAction(nameof(Index));
+    // }
 
-        return View(baseModel);
-    }
-
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(string id)
-    {
-        if (_context.BaseModel == null)
-        {
-            return Problem("Entity set 'ApplicationDbContext.BaseModel'  is null.");
-        }
-        var baseModel = await _context.BaseModel.FindAsync(id);
-        if (baseModel != null)
-        {
-            _context.BaseModel.Remove(baseModel);
-        }
-        
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
-    }
-
-    private bool BaseModelExists(string id)
-    {
-      return (_context.BaseModel?.Any(e => e.Id == id)).GetValueOrDefault();
-    }
+    // private bool BaseModelExists(string id)
+    // {
+    //   return (_context.BaseModel?.Any(e => e.Id == id)).GetValueOrDefault();
+    // }
 }

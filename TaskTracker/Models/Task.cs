@@ -4,8 +4,10 @@ namespace TaskTracker.Models;
 
 public class Task : BaseModel
 {
-    public DashBoard DashBoard { get; set; }
-    public User Creator { get; set; }
+    public string DashBoardId { get; set; }
+    public DashBoard? DashBoard { get; set; } = null;
+    public string CreatorId { get; set; }
+    public User? Creator { get; set; } = null;
     public string Title { get; set; }
     public string Description { get; set; } = "";
     public DateTime TimeCreated { get; set; }

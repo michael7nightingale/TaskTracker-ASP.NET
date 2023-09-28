@@ -4,8 +4,11 @@ namespace TaskTracker.Models;
 
 public class Invitation : BaseModel
 {
-    public User Inviter { get; set; }
-    public User Invited { get; set; }
+    public string InviterId { get; set; }
+    public User? Inviter { get; set; } = null;
+    public string InvitedId { get; set; }
+    public User? Invited { get; set; } = null;
+    public string ToDashBoardId { get; set; }
     public DashBoard ToDashBoard { get; set; }
     public DateTime TimeCreated { get; set; }
 
