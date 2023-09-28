@@ -20,6 +20,9 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-action="Index" asp-controller="DashBoard">My Dashboards</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-action="Index" asp-controller="Invitation">My Invitations</a>
+                </li>
                 <div class="dropdown-divider"></div>
                 <li class="nav-item">
                     <form class="form-inline" asp-action="Logout" asp-controller="Account" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

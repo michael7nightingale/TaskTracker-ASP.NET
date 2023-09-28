@@ -1,0 +1,75 @@
+@model TaskTracker.ViewModels.Invitation.InvitationListModel
+
+@{
+    ViewData["Title"] = "My Invitations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Invitations list</h1>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#incoming" type="button" role="tab" aria-controls="incoming" aria-selected="true">Incoming</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#outcoming" type="button" role="tab" aria-controls="outcoming" aria-selected="false">Outcoming</button>
+    </li>
+</ul>
+
+
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="incoming" role="tabpanel" aria-labelledby="incoming-tab">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Inviter User</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var invitation in Model.IncomingInvitations) {
+                <tr>
+                    <td>@invitation.ToDashBoard.Id</td>
+                    <td>
+                        <div class="row">
+                            <div class="col">
+                               <form action="@Url.Action("Accept", "Invitation", new { id = invitation.Id })" method="post">
+                                   <button class="btn btn-outline-primary green">Accept</button>
+                               </form>  
+                            </div>
+                            <div class="col">
+                                 <form action="@Url.Action("Delete", "Invitation", new { id = invitation.Id })" method="post">
+                                     <button class="btn btn-outline-primary red">Delete</button>
+                                 </form>                       
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="outcoming" role="tabpanel" aria-labelledby="outcoming-tab">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Invited User</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var invitation in Model.OutcomingInvitations) {
+                <tr>
+                    <td>@invitation.Id</td>
+                    <td>
+                        <form action="@Url.Action("Delete", "Invitation", new {id = invitation.Id})" method="post">
+                            <button class="btn btn-outline-primary red">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
