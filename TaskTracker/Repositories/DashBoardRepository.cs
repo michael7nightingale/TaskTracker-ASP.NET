@@ -9,21 +9,21 @@ public class DashBoardRepository: BaseRepository<DashBoard>
 {
     public DashBoardRepository(ApplicationDbContext context) : base(context)
     {
-        ;
     }
 
     public async new Task<DashBoard?> Get(string id)
     {
-        return await Entity.Select(d => new DashBoard
-            {
-                Id = d.Id,
-                Title = d.Title,
-                Creator = _db.Users.First(u => u.Id == d.CreatorId),
-                CreatorId = d.CreatorId,
-                Tasks = Entity.Where(d_ => d_.Id == id).SelectMany(d__ => d__.Tasks).ToList(),
-                Users = Entity.Where(_d_ => _d_.Id == id).SelectMany(__d__ => __d__.Users).ToList()
-            }
-        )
+        return await Entity
+            .Include(d => d.Tasks)
+            .Include(d => d.Users)
+            .Select(d => new DashBoard
+                {
+                    Id = d.Id,
+                    Title = d.Title,
+                    Creator = _db.Users.First(u => u.Id == d.CreatorId),
+                    CreatorId = d.CreatorId,
+                }
+            )
             .Where(d => d.Id == id).FirstOrDefaultAsync();
     }
     
