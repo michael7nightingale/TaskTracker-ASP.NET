@@ -48,7 +48,8 @@ public class DashBoardController : Controller
             return NotFound();
         }
 
-        // model.Tasks = await _taskRepository.GetTasksByDashBoard(id);
+        var currentUser = await GetHttpContextUser(_userManager, HttpContext);
+        ViewBag.CurrentUser = currentUser;
         return View(model);
     }
 
@@ -104,21 +105,19 @@ public class DashBoardController : Controller
         var currentUser = await GetHttpContextUser(_userManager, HttpContext);
         var invitedUser = await _context.Users.Where(u => u.Email == model.Email).FirstOrDefaultAsync();
          if (!dashBoard.Users.Contains(currentUser)) return BadRequest();
+         if (dashBoard.Users.Contains(invitedUser)) return BadRequest();
         if (invitedUser is not null)
-        {  try
+        { 
                  {
                      var instance = await _invitationRepository.Create(
                          new Invitation
                          {
-                             Invited = invitedUser,
-                             Inviter = currentUser,
-                             ToDashBoard = dashBoard
+                             InvitedId = invitedUser.Id,
+                             InviterId = currentUser.Id,
+                             ToDashBoardId = dashBoard.Id
                                  
                          }
                      );
-                 }
-                 catch 
-                 {
                  }
             
         }

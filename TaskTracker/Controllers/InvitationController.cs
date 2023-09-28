@@ -49,6 +49,9 @@ public class InvitationController : Controller
     [HttpPost]
     public async Task<IActionResult> Accept(string id)
     {
+        var invitation = await _invitationRepository.Get(id);
+        if (invitation is null) return NotFound(); 
+        _invitationRepository.Accept(invitation);
         return RedirectToAction("Index");
     }
     
