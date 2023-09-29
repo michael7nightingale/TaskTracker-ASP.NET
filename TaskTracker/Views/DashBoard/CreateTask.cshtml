@@ -7,14 +7,24 @@
 
 <div>
     <form asp-action="CreateTask" method="post">
-        <p>
-            <label>
-                <input type="text" name="Title"/>
-            </label>
-        </p>
-        <p>
-          <button class="btn btn-outline-primary">Create task</button>  
-        </p>
+        <div class="form-container">
+            <div class="form-item">
+                <label>
+                    Task title:
+                    <input class="form-control" type="text" name="Title"/>
+                </label>
+            </div>
+            <div class="form-item">
+                <label>
+                    Task description:
+                    <textarea class="form-control" name="Description"></textarea>
+                </label>
+            </div>
+            <div class="form-item">
+                <button class="btn btn-outline-primary">Create task</button>
+            </div>
+        </div>
+        
     </form>
     
 </div>

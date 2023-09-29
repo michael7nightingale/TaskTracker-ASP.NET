@@ -36,6 +36,7 @@ public class DashBoardController : Controller
         var dashBoards = _dashBoardRepository.GetUserDashBoards(
             await GetHttpContextUser(_userManager, HttpContext)
             );
+        ViewBag.CurrentUser = await GetHttpContextUser(_userManager, HttpContext);
         return View(dashBoards);
     }
 
@@ -89,10 +90,8 @@ public class DashBoardController : Controller
         {
             Title = model.Title,
             ToUsers = model.ToUsers,
-            Creator = await GetHttpContextUser(_userManager, HttpContext),
+            CreatorId = (await GetHttpContextUser(_userManager, HttpContext)).Id,
             DashBoardId = id,
-            DashBoard = await _dashBoardRepository.Get(id)
-            
         });
         return RedirectToAction(nameof(Detail), "DashBoard", new {id=dashBoard.Id} );
     }
@@ -125,21 +124,15 @@ public class DashBoardController : Controller
     }
     
 
-    // [HttpGet]
-    // public async Task<IActionResult> Edit(string? id)
-    // {
-    //     if (id == null || _context.BaseModel == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //
-    //     var model = await _dashBoardRepository.Get(id);
-    //     if (model == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //     return View(model);
-    // }
+    [HttpGet]
+    public async Task<IActionResult> Edit(string id)
+    {
+        DashBoard? dashBoard = await _dashBoardRepository.Get(id);
+        if (dashBoard is null) return NotFound();
+        var currentUser = await GetHttpContextUser(_userManager, HttpContext);
+        if (currentUser != dashBoard.Creator) return BadRequest();
+        return View(dashBoard);
+    }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -161,43 +154,25 @@ public class DashBoardController : Controller
         return View(await _dashBoardRepository.Get(id));
     }
 
-    // public async Task<IActionResult> Delete(string? id)
-    // {
-    //     if (id is null || _context.BaseModel == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //
-    //     var baseModel = await _context.BaseModel
-    //         .FirstOrDefaultAsync(m => m.Id == id);
-    //     if (baseModel == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //
-    //     return View(baseModel);
-    // }
+    public async Task<IActionResult> Delete(string id)
+    {
+        DashBoard? dashBoard = await _dashBoardRepository.Get(id);
+        if (dashBoard is null) return NotFound();
+        var currentUser = await GetHttpContextUser(_userManager, HttpContext);
+        if (currentUser != dashBoard.Creator) return BadRequest();
+        return View(dashBoard);
+    }
 
-    // [HttpPost, ActionName("Delete")]
-    // [ValidateAntiForgeryToken]
-    // public async Task<IActionResult> DeleteConfirmed(string id)
-    // {
-    //     if (_context.BaseModel == null)
-    //     {
-    //         return Problem("Entity set 'ApplicationDbContext.BaseModel'  is null.");
-    //     }
-    //     var baseModel = await _context.BaseModel.FindAsync(id);
-    //     if (baseModel != null)
-    //     {
-    //         _context.BaseModel.Remove(baseModel);
-    //     }
-    //     
-    //     await _context.SaveChangesAsync();
-    //     return RedirectToAction(nameof(Index));
-    // }
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(string id)
+    {
+        DashBoard? dashBoard = await _dashBoardRepository.Get(id);
+        if (dashBoard is null) return NotFound();
+        var currentUser = await GetHttpContextUser(_userManager, HttpContext);
+        if (currentUser != dashBoard.Creator) return BadRequest();
+        _dashBoardRepository.Delete(dashBoard);
+        return RedirectToAction(nameof(Index));
+    }
 
-    // private bool BaseModelExists(string id)
-    // {
-    //   return (_context.BaseModel?.Any(e => e.Id == id)).GetValueOrDefault();
-    // }
 }

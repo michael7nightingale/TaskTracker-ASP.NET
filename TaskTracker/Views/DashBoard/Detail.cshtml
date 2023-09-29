@@ -71,7 +71,15 @@
             {
                 <div class="col">
                     <div class="task-container">
-                       <h5>@task.Title</h5> 
+                        <h5>@task.Title</h5> 
+                        @if (Convert.ToBoolean(task.Description))
+                        {
+                            <p>@task.Description</p>
+                        }
+                        else
+                        {
+                            <p>No description provided</p>
+                        }
                     </div>
                 </div>
             }

@@ -1,20 +1,14 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+﻿FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["TodoApp/TodoApp.csproj", "TodoApp/"]
-RUN dotnet restore "TodoApp/TodoApp.csproj"
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 COPY . .
-WORKDIR "/src/TodoApp"
-RUN dotnet build "TodoApp.csproj" -c Release -o /app/build
+RUN dotnet restore "./TaskTracker.csproj"
+RUN dotnet build "./TaskTracker.csproj" -c Release -o /build
 
 FROM build AS publish
-RUN dotnet publish "TodoApp.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "TaskTracker.csproj" -c Release -o /build /p:UseAppHost=false
 
 FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "TodoApp.dll"]
+WORKDIR /build
+COPY --from=publish /publish .
+ENTRYPOINT ["dotnet", "TaskTracker.dll"]

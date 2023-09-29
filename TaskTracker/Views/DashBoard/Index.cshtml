@@ -18,13 +18,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var dashBoard in Model) {
     <tr>
-        <td>@item.Title</td>
+        <td>@dashBoard.Title</td>
         <td>
-            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Detail" asp-route-id="@item.Id">Details</a> |
-            @* <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> *@
+            
+            @if (ViewBag.CurrentUser.Id == dashBoard.CreatorId)
+            {
+                <p>
+                    <a asp-action="Detail" asp-route-id="@dashBoard.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@dashBoard.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@dashBoard.Id">Delete</a>
+                </p>
+                
+            }
+            else
+            {
+                <p>
+                    <a asp-action="Detail" asp-route-id="@dashBoard.Id">Details</a> |
+                </p>   
+            }
         </td>
         
     </tr>

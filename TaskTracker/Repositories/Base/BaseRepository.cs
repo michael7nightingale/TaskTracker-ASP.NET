@@ -44,6 +44,12 @@ public class BaseRepository<TModel> : IBaseRepository<TModel> where TModel: Base
         Entity.Remove(instance);
         SaveChanges();
     }
+    
+    public async void Delete(TModel model)
+    {
+        Entity.Remove(model);
+        SaveChanges();
+    }
 
     public async  void SaveChanges()
     {

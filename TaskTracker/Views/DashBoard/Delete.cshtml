@@ -1,4 +1,5 @@
-@model TaskTracker.Models.Base.BaseModel
+@using Microsoft.EntityFrameworkCore.Infrastructure
+@model TaskTracker.Models.DashBoard
 
 @{
     ViewData["Title"] = "Delete";
@@ -7,16 +8,16 @@
 
 <h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete this dashboard (@Model.Title)?</h3>
 <div>
-    <h4>BaseModel</h4>
+    <h4>if has @Model.Users.Count users and @Model.Tasks.Count tasks.</h4>
     <hr />
     <dl class="row">
     </dl>
     
-    <form asp-action="Index">
+    <form actio="@Url.Action("Delete", "DashBoard", new {Id = Model.Id})" method="post">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <button class="btn btn-danger">Delete</button> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

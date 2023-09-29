@@ -38,6 +38,7 @@ body {
 
 .form-item{
   margin: auto;
+  margin-top: 15px;
   border-radius: 3px;
   width: 90%;
 }
