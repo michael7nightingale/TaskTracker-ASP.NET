@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Scaffolding;
 using TaskTracker.Models;
 using TaskTracker.Repositories;
 using TaskTracker.ViewModels.DashBoard;
@@ -11,6 +10,7 @@ using Task = TaskTracker.Models.Task;
 
 
 namespace TaskTracker.Controllers;
+
 
 [Authorize]
 public class DashBoardController : Controller
@@ -31,6 +31,7 @@ public class DashBoardController : Controller
     }
 
     [HttpGet]
+    [Route("/dashboards")]
     public async Task<IActionResult> Index()
     {
         var dashBoards = _dashBoardRepository.GetUserDashBoards(
@@ -41,6 +42,7 @@ public class DashBoardController : Controller
     }
 
     [HttpGet]
+    [Route("/dashboards/{id}")]
     public async Task<IActionResult> Detail(string id)
     {
         var model = await _dashBoardRepository.Get(id);    
@@ -55,10 +57,12 @@ public class DashBoardController : Controller
     }
 
     [HttpGet]
+    [Route("/dashboards/create")]
     public IActionResult Create() => View();
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Route("/dashboards/create")]
     public async Task<IActionResult> Create(DashBoardCreateModel model)
     {
        await _dashBoardRepository.Create(new DashBoard
@@ -70,6 +74,7 @@ public class DashBoardController : Controller
     }
 
     [HttpGet]
+    [Route("/dashboards/create-task/{id}")]
     public async Task<IActionResult> CreateTask(string id)
     {
         var dashBoard = await _dashBoardRepository.Get(id);
@@ -81,6 +86,7 @@ public class DashBoardController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Route("/dashboards/create-task/{id}")]
     public async Task<IActionResult> CreateTask(string id, TaskCreateModel model)
     {
         DashBoard? dashBoard = await _dashBoardRepository.Get(id);
@@ -90,6 +96,7 @@ public class DashBoardController : Controller
         {
             Title = model.Title,
             ToUsers = model.ToUsers,
+            Description = model.Description,
             CreatorId = (await GetHttpContextUser(_userManager, HttpContext)).Id,
             DashBoardId = id,
         });
@@ -97,6 +104,7 @@ public class DashBoardController : Controller
     }
 
     [HttpPost]
+    [Route("/dashboards/invite-user/{id}")]
     public async Task<IActionResult> InviteUser(string id, InviteUserModel model)
     {
         DashBoard? dashBoard = await _dashBoardRepository.Get(id);
@@ -122,7 +130,23 @@ public class DashBoardController : Controller
         }
         return RedirectToAction("Detail", "DashBoard", new {id = id});
     }
-    
+
+
+    [HttpPost]
+    [Route("/dashboards/finish-task/{id}/{taskId}")]
+    public async Task<IActionResult> FinishTask(string id, string taskId)
+    {
+        DashBoard? dashBoard = await _dashBoardRepository.Get(id);
+        Console.WriteLine($"dashboard id {dashBoard}");
+        if (dashBoard is null) return NotFound();
+        Models.Task? task = await _taskRepository.GetByDashBoardId(taskId, id);
+        Console.WriteLine($"task id {task}");
+        if (task is null) return NotFound();
+        var currentUser = await GetHttpContextUser(_userManager, HttpContext);
+        if (!dashBoard.Users.Contains(currentUser)) return Forbid();
+        _taskRepository.FinishTask(ref task);
+        return RedirectToAction("Detail", "DashBoard", new { id = dashBoard.Id });
+    }
 
     [HttpGet]
     public async Task<IActionResult> Edit(string id)
@@ -154,6 +178,8 @@ public class DashBoardController : Controller
         return View(await _dashBoardRepository.Get(id));
     }
 
+    [HttpGet]
+    [Route("/dashboards/delete/{id}")]
     public async Task<IActionResult> Delete(string id)
     {
         DashBoard? dashBoard = await _dashBoardRepository.Get(id);
@@ -164,6 +190,7 @@ public class DashBoardController : Controller
     }
 
     [HttpPost, ActionName("Delete")]
+    [Route("/dashboards/delete/{id}")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(string id)
     {

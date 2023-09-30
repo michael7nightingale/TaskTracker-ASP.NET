@@ -7,6 +7,7 @@ using TaskTracker.ViewModels;
 
 namespace TaskTracker.Controllers;
 
+[AllowAnonymous]
 public class AccountController : Controller
 {
     private ApplicationDbContext _db;
@@ -23,11 +24,11 @@ public class AccountController : Controller
 
 
     [HttpGet]
-    [AllowAnonymous]
+    [Route("/account/login")]
     public IActionResult Login() => View();
 
     [HttpPost]
-    [AllowAnonymous]
+    [Route("/account/login")]
     public async Task<IActionResult> Login(UserLoginModel userLoginModelData)
     {
         var user = await _signInManager.PasswordSignInAsync(userLoginModelData.Email, userLoginModelData.Password, true, false);
@@ -41,12 +42,12 @@ public class AccountController : Controller
     
     
     [HttpGet]
-    [AllowAnonymous]
+    [Route("/account/register")]
     public IActionResult Register() => View();
 
 
     [HttpPost]
-    [AllowAnonymous]
+    [Route("/account/register")]
     public async Task<IActionResult> Register(UserRegisterModel userRegisterData)
     {
         if (userRegisterData.ConfirmPassword != userRegisterData.Password)
@@ -66,6 +67,7 @@ public class AccountController : Controller
 
     [HttpPost]
     [Authorize]
+    [Route("/account/logout")]
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();

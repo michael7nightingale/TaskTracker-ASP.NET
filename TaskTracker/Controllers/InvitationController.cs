@@ -23,6 +23,7 @@ public class InvitationController : Controller
     }
 
     [HttpGet]
+    [Route("/invitation")]
     public async Task<IActionResult> Index()
     {
         var currentUser = await GetHttpContextUser(_userManager, HttpContext);
@@ -32,6 +33,7 @@ public class InvitationController : Controller
     }
 
     [HttpPost]
+    [Route("/invitation/delete/{id}")]
     public async Task<IActionResult> Delete(string id)
     {
         var invitation = await _invitationRepository.Get(id);
@@ -47,6 +49,7 @@ public class InvitationController : Controller
     }
 
     [HttpPost]
+    [Route("/invitation/accept/{id}")]
     public async Task<IActionResult> Accept(string id)
     {
         var invitation = await _invitationRepository.Get(id);

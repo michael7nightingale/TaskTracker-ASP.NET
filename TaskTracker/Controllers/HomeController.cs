@@ -5,6 +5,7 @@ using TaskTracker.Models;
 
 namespace TaskTracker.Controllers;
 
+[AllowAnonymous]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -15,11 +16,11 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    [AllowAnonymous]
+    [Route("/")]
     public IActionResult Index() => View();
 
     [HttpGet]
-    [AllowAnonymous]
+    [Route("/")]
     public IActionResult Privacy() => View();
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
