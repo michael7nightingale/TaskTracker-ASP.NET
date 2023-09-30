@@ -4,7 +4,7 @@
     ViewData["Title"] = "DashBoard Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<link rel="stylesheet" href="~/css/dashboard.css"/>
 <h1>@Model.Title</h1>
 
 <div>
@@ -72,13 +72,22 @@
                 <div class="col">
                     <div class="task-container">
                         <h5>@task.Title</h5> 
-                        @if (Convert.ToBoolean(task.Description))
+                        @if (task.Description.Length > 0)
                         {
                             <p>@task.Description</p>
                         }
                         else
                         {
                             <p>No description provided</p>
+                        }
+                        <p>
+                            Status: @(task.IsFinished ? "Finished" : "Not finished")
+                        </p>
+                        @if (!task.IsFinished)
+                        {
+                            <form action="@Url.Action("FinishTask", "Dashboard", new {id = Model.Id, taskId = task.Id})" method="post">
+                                <button class="btn btn-outline-primary center-button">Finish</button>
+                            </form>
                         }
                     </div>
                 </div>
